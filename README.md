@@ -62,8 +62,8 @@ The project is structured into two main folders:
 Clone this repository to your local machine using:
 
 ```bash
-git clone https://github.com/yourusername/siwe-authentication.git
-cd siwe-authentication
+[git clone https://github.com/yourusername/siwe-authentication.git](https://github.com/peter-mwau/Sign-In-with-Ethereum-SIWE-Implemetation.git)
+cd Sign-In-with-Ethereum-SIWE-Implemetation
 ```
 
 ###Installing Dependencies
