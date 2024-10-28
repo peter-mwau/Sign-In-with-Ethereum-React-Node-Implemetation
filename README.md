@@ -66,7 +66,7 @@ Clone this repository to your local machine using:
 cd Sign-In-with-Ethereum-SIWE-Implemetation
 ```
 
-###Installing Dependencies
+### Installing Dependencies
 - Install the required dependencies for both frontend and backend:
 
 - Frontend:
@@ -81,7 +81,7 @@ cd Backend
 npm install
 ```
 
-###Running the Application
+### Running the Application
 - Frontend
 To start the frontend with Vite in development mode:
 ```
@@ -93,43 +93,43 @@ To start the backend server with Node.js/Express:
 npm start
 ```
 
-###Testing
+### Testing
 - Open your browser and navigate to the frontend's development server, typically at http://localhost:5173.
 - Connect your wallet and follow the login prompt.
 - Upon signing in, a JWT will be generated and stored, allowing authenticated access to protected routes.
 
-##Project Walkthrough
-###1. User Login with Ethereum
+## Project Walkthrough
+### 1. User Login with Ethereum
 - The frontend prompts the user to connect their wallet (e.g., MetaMask).
 - After connecting, a unique nonce is requested from the backend.
 - A SIWE message is created, containing the nonce, domain, and other identifying data.
 - The message is signed by the user’s wallet and sent to the backend.
-###2. Signature Verification & JWT Issuance
+### 2. Signature Verification & JWT Issuance
 - The backend verifies the signed message using the SIWE library.
 - Upon successful verification, a JWT is generated and issued to the frontend.
 - The JWT is stored securely in local storage or cookies, allowing the frontend to access authenticated resources.
-###3. Accessing User Information
+### 3. Accessing User Information
 - The frontend can optionally retrieve and display ENS profile data (avatar, email, etc.) tied to the Ethereum address.
 - User data is periodically updated to reflect any changes in profile or authentication status.
   
-##Technologies Used
+## Technologies Used
 - **Frontend**: Vite, React, Tailwind CSS
 - **Backend**: Node.js, Express, SIWE Library, JWT for secure session management
 - **Ethereum Wallet Integration**: Metamask, Ethers.js
 - **ENS Data Support**: (Optional) Display ENS profiles linked to the Ethereum address.
 
-##Understanding Sign-In with Ethereum (SIWE)
-###How SIWE Works
+## Understanding Sign-In with Ethereum (SIWE)
+### How SIWE Works
 - **Decentralized Identifiers**: Ethereum addresses act as decentralized identifiers (DIDs) in SIWE, allowing users to control their identities without a central authority.
 - **Public/Private Key Verification**: Ethereum’s cryptographic protocol relies on users signing messages with their private key. The signed message, verified using the corresponding public key, proves ownership of the Ethereum address.
 - **Session-Based Authentication with JWT**: To maintain authenticated sessions, the backend generates JWTs upon successful login. JWTs are signed and contain essential user info, allowing for secure resource access.
 
-##Security Measures
+## Security Measures
 - **Message Nonces**: Each SIWE message includes a unique nonce, preventing replay attacks.
 - **Signature Validation**: The backend checks the signature to verify that the request originates from the claimed Ethereum address.
 - **Token Expiration**: JWTs include expiration times to limit session duration, enhancing security.
 
-##Future Improvements
+## Future Improvements
 - This project could be further enhanced by adding:
 
 - **ENS Profile Management**: Enable users to update their ENS profiles directly through the app.
