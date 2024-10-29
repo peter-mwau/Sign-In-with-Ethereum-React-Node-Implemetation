@@ -1,8 +1,23 @@
 import { useContext } from "react";
 import WalletContext from "../contexts/walletContext";
+import { useDisconnect } from "wagmi";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { disconnectWallet, getInformation } = useContext(WalletContext);
+  const { disconnect } = useDisconnect();
+  const { getInformation, isLoggedIn, setIsLoggedIn } =
+    useContext(WalletContext);
+  const navigate = useNavigate();
+
+  const disconnectWallet = async () => {
+    await disconnect();
+    setIsLoggedIn(false);
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
+  };
+
+  console.log(isLoggedIn);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 text-white">
@@ -20,6 +35,7 @@ const Home = () => {
         >
           Disconnect Wallet
         </button>
+
         <button
           onClick={getInformation}
           className="w-full bg-cyan-950 hover:bg-gray-100 transition ease-in-out duration-300 text-white hover:text-gray-900 font-semibold py-2 px-4 rounded-md shadow-md hover:shadow-lg"

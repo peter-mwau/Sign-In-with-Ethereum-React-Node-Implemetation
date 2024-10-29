@@ -6,6 +6,27 @@ import WalletContext from "./contexts/walletContext";
 import { useNavigate } from "react-router-dom";
 import blockies from "ethereum-blockies";
 
+import "@rainbow-me/rainbowkit/styles.css";
+
+import {
+  getDefaultConfig,
+  RainbowKitProvider,
+  lightTheme,
+} from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  sepolia,
+  localhost,
+  hardhat,
+  celo,
+} from "wagmi/chains";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
 export default function Providers({ children }) {
   const domain = window.location.host;
   const origin = window.location.origin;
@@ -15,6 +36,25 @@ export default function Providers({ children }) {
   const [ENSMetadata, setENSMetadata] = useState(null);
   const [address, setAddress] = useState(null);
   const navigate = useNavigate();
+
+  const config = getDefaultConfig({
+    appName: "SIWE Implementation",
+    projectId: "1e91e33eb8db73af7f34de8d02fb03f1",
+    chains: [
+      mainnet,
+      polygon,
+      optimism,
+      arbitrum,
+      base,
+      sepolia,
+      localhost,
+      hardhat,
+      celo,
+    ],
+    ssr: false,
+  });
+
+  const queryClient = new QueryClient();
 
   const BACKEND_ADDR = "http://localhost:5000";
 
@@ -36,10 +76,10 @@ export default function Providers({ children }) {
 
   async function connectWallet() {
     try {
-      const accounts = await provider.send("eth_requestAccounts", []);
-      setAddress(accounts[0]);
+      // const accounts = await provider.send("eth_requestAccounts", []);
+      // setAddress(accounts[0]);
       setIsConnected(true);
-      console.log("Connected address:", accounts[0]);
+      // console.log("Connected address:", accounts[0]);
     } catch {
       console.log("User rejected wallet connection request");
     }
@@ -149,22 +189,38 @@ export default function Providers({ children }) {
     if (ENSMetadata) {
       console.log("ENSMetadata updated: ", ENSMetadata); // Confirm updates here
     }
+    // connectWallet();
   }, [address]);
 
   return (
-    <WalletContext.Provider
-      value={{
-        isLoggedIn,
-        connected,
-        connectWallet,
-        disconnectWallet,
-        signInWithEthereum,
-        getInformation,
-        ENSMetadata,
-      }}
-    >
-      {children}
-    </WalletContext.Provider>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider
+          // modalSize="compact"
+          theme={lightTheme({
+            accentColor: "#ecc94b",
+            accentColorForeground: "black",
+            borderRadius: "medium",
+            fontStack: "system",
+          })}
+        >
+          <WalletContext.Provider
+            value={{
+              isLoggedIn,
+              connected,
+              connectWallet,
+              disconnectWallet,
+              signInWithEthereum,
+              getInformation,
+              ENSMetadata,
+              setIsLoggedIn,
+            }}
+          >
+            {children}
+          </WalletContext.Provider>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 
